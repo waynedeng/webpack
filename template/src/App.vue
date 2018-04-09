@@ -1,34 +1,63 @@
+<style scoped>
+  .layout{
+      border: 1px solid #d7dde4;
+      background: #f5f7f9;
+  }
+  .layout-assistant{
+      width: 300px;
+      margin: 0 auto;
+      height: inherit;
+  }
+  .layout-breadcrumb{
+      padding: 10px 15px 0;
+  }
+  .layout-content{
+      min-height: 600px;
+      margin: 15px;
+      overflow: hidden;
+      background: #fff;
+      border-radius: 4px;
+  }
+  .layout-content-main{
+      padding: 10px;
+      min-height: 600px;
+  }
+  .layout-copy{
+      text-align: center;
+      padding: 10px 0 20px;
+      color: #9ea7b4;
+  }
+</style>
+
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    {{#router}}
-    <router-view/>
-    {{else}}
-    <HelloWorld/>
-    {{/router}}
-  </div>
+  <div v-bind:class="{ layout: logined }">
+        <AppHeader />
+        <div class="layout-content">
+          <div class="layout-content-main" style="width:100%;">
+            <router-view/>
+          </div>
+        </div>
+        <div class="layout-copy" v-if="logined" >
+            2018 &copy; RCC China
+        </div>
+    </div>
 </template>
 
 <script>
-{{#unless router}}
-import HelloWorld from './components/HelloWorld'
+import AppHeader from './components/common/AppHeader.vue'
 
-{{/unless}}
 export default {
-  name: 'App'{{#router}}{{else}},
+  name: 'app',
+  computed: {
+    logined () {
+      return this.$store.state.user.login
+    },
+    current_title () {
+      return this.$store.state.user.current_title
+    }
+  },
   components: {
-    HelloWorld
-  }{{/router}}
+    AppHeader
+  }
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
