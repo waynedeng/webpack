@@ -5,7 +5,7 @@
         <i class="fa fa-key" aria-hidden="true" />
         登录系统
       </div>
-      {{login_info}}
+      <div>{{login_info}}</div>
       <Form ref="loginForm" :model="loginForm" :rules="rules" v-if="show_login_form">
         <FormItem prop="user">
             <Input type="text" v-model="loginForm.username" placeholder="用户名">
