@@ -11,11 +11,11 @@
       left: 20px;
       line-height: 18px;
       padding-top: 5px;
-      padding-left: 5px; 
+      padding-left: 5px;
       margin-right: 20px;
   }
   .layout-nav{
-      width: 500px; 
+      width: 500px;
       margin: 0 auto;
   }
 </style>
@@ -33,15 +33,15 @@
           <div class="layout-nav">
             <MenuItem :name="m.name" v-for="m in menus" :key="m.id">
                 <Icon :type="m.icon"></Icon>
-                {{m.title}}
+
             </MenuItem>
           </div>
         </Col>
         <Col :xs="10" :sm="10" :md="5" :lg="5">
-          <div style="float:right; color: #FFF; cursor: pointer;"> 
+          <div style="float:right; color: #FFF; cursor: pointer;">
             <Dropdown style="margin-right: 20px" @on-click="userMenuClicked">
               &nbsp;&nbsp;
-              {{current_user.username}}
+
               <Icon type="arrow-down-b"></Icon>
               <DropdownMenu slot="list">
                 <DropdownItem name="quit" divided>安全退出</DropdownItem>
@@ -87,9 +87,6 @@ export default {
         })
       }
     }
-  },
-  mounted: function () {
-    this.loadUnreadMessageCount()
   },
   computed: {
     logined () {

@@ -31,16 +31,16 @@
 
 <template>
   <div v-bind:class="{ layout: logined }">
-        <AppHeader />
-        <div class="layout-content">
-          <div class="layout-content-main" style="width:100%;">
-            <router-view/>
-          </div>
-        </div>
-        <div class="layout-copy" v-if="logined" >
-            2018 &copy; RCC China
-        </div>
+    <AppHeader />
+    <div class="layout-content">
+      <div class="layout-content-main" style="width:100%;">
+        <router-view/>
+      </div>
     </div>
+    <div class="layout-copy" v-if="logined" >
+        2018 &copy; RCC China
+    </div>
+  </div>
 </template>
 
 <script>

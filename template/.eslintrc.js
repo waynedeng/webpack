@@ -68,6 +68,7 @@ module.exports = {
       optionalDependencies: ['test/unit/index.js']
     }],
     {{/if_eq}}
+    "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   }

@@ -26,30 +26,32 @@
 </template>
 
 <script>
-  export default {
-    data: function () {
-      return {
-        show_login_form: false,
-        login_info: '',
-        loginForm: {
-          username: 'w.deng',
-          password: '123456'
-        },
-        rules: {
-          username: [
-            {required: true, message: '请输入用户名', trigger: 'blur'}
-          ],
-          password: [
-            {required: true, message: '请输入密码', trigger: 'blur'}
-          ]
-        }
+export default {
+  data: function() {
+    return {
+      show_login_form: false,
+      login_info: '',
+      loginForm: {
+        username: 'w.deng',
+        password: '123456'
+      },
+      rules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' }
+        ],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
       }
-    },
-    methods: {
-      tryAutoLogin () {
-        const self = this
-        this.login_info = '尝试登录中……'
-        this.$api.loginApis.try_login({}, this, (result) => {
+    }
+  },
+  methods: {
+    tryAutoLogin() {
+      const self = this
+      this.login_info = '尝试登录中……'
+      this.$api.loginApis.try_login(
+        this.loginForm,
+        this,
+        result => {
+          console.log(result)
           self.$store.commit({
             type: 'userLogin',
             user_info: result.user_info
@@ -62,71 +64,76 @@
             console.log(['Redirect to:', nextUrl])
             self.$router.push(nextUrl)
           })
-        }, (failedResult) => {
+        },
+        failedResult => {
           self.$Message.error(failedResult.error)
-        })
-      },
-      submitForm (formName) {
-        const self = this
-        self.$refs[formName].validate((valid) => {
-          if (valid) {
-            // localStorage.setItem('username', username)
-            // 模拟登陆
-            // 更改state，标记为已登录
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        })
-      }
+        }
+      )
     },
-    computed: {
-      logined () {
-        return this.$store.state.user.login
-      }
-    },
-    mounted () {
-      console.log(['Login mounted!', this.logined])
+    submitForm(formName) {
+      const self = this
+      self.$refs[formName].validate(valid => {
+        if (valid) {
+          this.tryAutoLogin()
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    }
+  },
+  computed: {
+    logined() {
+      return this.$store.state.user.login
+    }
+  },
+  mounted() {
+    console.log(['Login mounted!', this.logined])
+    // 如果appConfig.loginMethod为单点登录，则自动尝试登录，失败跳转到单点登录页面
+    if (this.$appConfig.loginMethod === 'oauth') {
       if (this.logined === false) {
         this.tryAutoLogin()
       }
+    } else {
+      this.show_login_form = true
     }
   }
+}
 </script>
 
 <style scoped>
-  .login-wrap {
-    width: 100%;
-    height: 100%;
-  }
+.login-wrap {
+  width: 100%;
+  height: 100%;
+}
 
-  .ms-title {
-    font-weight: bold;
-    font-family: 宋体, serif;
-    font-size: 18px;
-    color: rgb(51, 51, 51);
-    text-align: center;
-    padding: 0 0 30px 0;
-  }
+.ms-title {
+  font-weight: bold;
+  font-family: 宋体, serif;
+  font-size: 18px;
+  color: rgb(51, 51, 51);
+  text-align: center;
+  padding: 0 0 30px 0;
+}
 
-  .ms-login {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 300px;
-    height: 160px;
-    margin: -150px 0 0 -190px;
-    padding: 0 40px;
-    border-radius: 5px;
-    background: #fff;
-  }
+.ms-login {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 300px;
+  height: 160px;
+  margin: -150px 0 0 -190px;
+  padding: 0 40px;
+  border-radius: 5px;
+  background: #fff;
+}
 
-  .login-btn {
-    text-align: center;
-  }
+.login-btn {
+  text-align: center;
+}
 
-  .login-btn button {
-    width: 100%;
-    height: 36px;
-  }
+.login-btn button {
+  width: 100%;
+  height: 36px;
+}
 </style>
